@@ -89,16 +89,16 @@ namespace Change_name_ext_via_two_folders
             string f1text = f1.Text;
 
             // ساختن یک دیکشنری برای نگه‌داری نام فایل‌های پوشه دوم بر اساس عدد فایل
-            var fileMap = new Dictionary<string, string>();
-            Regex pattern = new Regex(@"(\d+)\" + ext.Replace("*", string.Empty));
-            Regex pattern2 = new Regex(@"\d{4}\.\d{2}\.\d{2}-.*جلسه(\d+)\.");
+            var fileMap = new Dictionary<int, string>(); // استفاده از عدد صحیح به عنوان کلید
+            Regex pattern = new Regex(@"(\d+)" + ext.Replace("*", string.Empty));
+            Regex pattern2 = new Regex(@"^(\d{1,3})_"); // الگوی جدید برای فایل‌های شما
 
             foreach (string file in files2)
             {
                 Match match = pattern2.Match(Path.GetFileName(file));
                 if (match.Success)
                 {
-                    string number = match.Groups[1].Value;
+                    int number = int.Parse(match.Groups[1].Value); // تبدیل به عدد صحیح
                     fileMap[number] = Path.GetFileName(file);
                 }
             }
@@ -109,7 +109,7 @@ namespace Change_name_ext_via_two_folders
                 Match match = pattern.Match(Path.GetFileName(file));
                 if (match.Success)
                 {
-                    string number = match.Groups[1].Value;
+                    int number = int.Parse(match.Groups[1].Value); // تبدیل به عدد صحیح
                     if (fileMap.ContainsKey(number))
                     {
                         string newName = fileMap[number];
@@ -121,6 +121,7 @@ namespace Change_name_ext_via_two_folders
                 }
             }
         }
+
 
     }
 }
